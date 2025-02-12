@@ -1,0 +1,58 @@
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<p id="status">Status: Pending...</p>
+<button onclick="generate()">New Question</button>
+<p style="font-size: 1.5em;" id="question">\(\sqrt[3]{27}\)</p>
+<input id="answer" type="number" autocomplete='off' size="10"></input>
+<button onclick="submit()">Submit</button>
+<hr/>
+<label for="baselimit">Maximum base ( \(base = \sqrt{radicand}\) ): </label><input size="5" autocomplete='off' id="baselimit" onchange="updateLimits()" min="0" type="number" value="10"><br/>
+<label for="explimit">Maximum exponent: </label><input size="2" autocomplete='off' id="explimit" onchange="updateLimits()" min="2" type="number" value="4"><br/>
+<label for="indexlimit">Maximum radical index: </label><input size="2" autocomplete='off' id="indexlimit" onchange="updateLimits()" min="2" type="number" value="4"><br/>
+<script>
+
+console.log("No. You shall not.")
+
+let status = document.getElementById("status");
+let question = document.getElementById("question");
+let input = document.getElementById("answer");
+let answer;
+let statusInterval;
+let baselimit = 10;
+let explimit = 4;
+let indexlimit = 4;
+
+function generate(){
+    let base = Math.floor(Math.random() * baselimit + 1);
+    if (Math.random() > 0.5){
+        let exp = Math.floor(Math.random() * (explimit-1) + 2);
+        answer = base ** exp;
+        question.innerText = `\\( ${base}^{${exp}} \\)`
+        MathJax.typeset();
+    }
+    {
+        let index = Math.floor(Math.random() * (indexlimit-1) + 2);
+        answer = base;
+        question.innerText = `\\( \\sqrt[${index}]{${base**index}} \\)`
+        MathJax.typeset();
+    }
+
+}
+
+function submit(){
+    clearInterval(statusInterval);
+    status.innerText = `Status: ${parseInt(input.value) == answer ? "Correct!" : "Incorrect"}\nYou answered: ${input.value}\nThe answer was: ${answer}`
+    generate();
+    statusInterval = setInterval(()=>{status.innerText = "Status: Pending..."}, 2500)
+}
+
+function updateLimits(){
+    [baselimit, explimit, indexlimit] = [parseInt(document.getElementById("baselimit").value),
+                                         parseInt(document.getElementById("explimit").value),
+                                         parseInt(document.getElementById("indexlimit").value)]; 
+
+}
+
+generate()
+
+</script>
