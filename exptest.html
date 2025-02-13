@@ -1,79 +1,124 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Powers and Exponents Tester - Power of An Exponent</title>
-<meta property="og:title" content="Powers and Exponents Tester"/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://py660.github.io/PowerOfAnExponent"/>
-<meta property="og:image" content="pe.png"/>
-<meta property="og:site_name" content="Power of An Exponent"/>
-<meta property="og:description" content="Test your knowledge of common powers and exponents using this tool."/>
-<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body>
-<h1>Powers and Exponents Tester</h1>
-<hr/>
-<p id="status">Status: Pending...</p>
-<p style="font-size: 1.5em;" id="question"></p>
-<form onsubmit="return false;">
-<input required autofocus name="answer" id="answer" type="number" autocomplete='off' size="10">
-<button type="submit" onclick="submit1();">Submit</button> <!--the "submit" name in onclick is reserved, which is a stupid and stupidlylj legacy "feature"-->
-</form>
-<hr/>
-<label for="baselimit">Maximum base ( \(base = \sqrt{radicand}\) ): </label><input required size="5" autocomplete='off' id="baselimit" onchange="updateLimits()" min="0" type="number" value="10"><br/>
-<label for="explimit">Maximum exponent: </label><input required size="2" autocomplete='off' id="explimit" onchange="updateLimits()" min="2" type="number" value="4"><br/>
-<label for="indexlimit">Maximum radical index: </label><input required size="2" autocomplete='off' id="indexlimit" onchange="updateLimits()" min="2" type="number" value="4"><br/>
-<script>
+    <head>
+        <title>Powers and Exponents Tester - Power of An Exponent</title>
+        <meta property="og:title" content="Powers and Exponents Tester"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://py660.github.io/PowerOfAnExponent"/>
+        <meta property="og:image" content="pe.png"/>
+        <meta property="og:site_name" content="Power of An Exponent"/>
+        <meta property="og:description" content="Test your knowledge of common powers and exponents using this tool."/>
+        <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <style>
+            .hud {
+                border: solid 1px black;
+                padding: 5px;
+                margin: 5px;
+            }
+            .hudgroup {
+                padding: 5px;
+            }
+            .question {
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Powers and Exponents Tester</h1>
+        <hr/>
+        <div class="hudgroup">
+            <span id="status" class="hud">Pending...</span>
+            <span id="time" class="hud">0 seconds</span>
+            <span id="points" class="hud">0 points</span>
+        </div>
+        <div class="hud question">
+            <span style="font-size: 1.5em;" id="question"></span>
+            <form onsubmit="return false;">
+                <input required autofocus name="answer" id="answer" type="number" autocomplete='off' size="10">
+                <button type="submit" onclick="submit1();">Submit</button> <!--the "submit" name in onclick is reserved, which is a stupid and stupidlylj legacy "feature"-->
+            </form>
+        </div>
+        <hr/>
+        <div class="hudgroup">
+            <div class="hud"><label for="baselimit">Maximum base ( \(base = \sqrt{radicand}\) ): </label><input required size="5" autocomplete='off' id="baselimit" onchange="updateLimits()" min="0" type="number" value="10"><br/></div>
+            <div class="hud"><label for="explimit">Maximum exponent: </label><input required size="2" autocomplete='off' id="explimit" onchange="updateLimits()" min="2" type="number" value="4"><br/></div>
+            <div class="hud"><label for="indexlimit">Maximum radical index: </label><input required size="2" autocomplete='off' id="indexlimit" onchange="updateLimits()" min="2" type="number" value="4"><br/></div>
+        </div>
+        <script>
 
-console.log("No. You shall not.")
+            console.log("No. You shall not.")
 
-let status = document.getElementById("status");
-let question = document.getElementById("question");
-let input = document.getElementById("answer");
-let answer;
-let statusTimeout;
-let questionLatex;
-let baselimit = 10;
-let explimit = 4;
-let indexlimit = 4;
+            let status = document.getElementById("status");
+            let timeel = document.getElementById("time");
+            let pointsel = document.getElementById("points");
+            let question = document.getElementById("question");
+            let input = document.getElementById("answer");
+            let answer;
+            let statusTimeout;
+            let timerInterval;
+            let questionLatex;
+            let baselimit = 10;
+            let explimit = 4;
+            let indexlimit = 4;
+            let time = new Date();
+            let currPoints = 0;
+            let targetPoints = 0;
 
-function generate(){
-    let base = Math.floor(Math.random() * baselimit + 1);
-    if (Math.random() > 0.5){
-        let exp = Math.floor(Math.random() * (explimit-1) + 2);
-        answer = base ** exp;
-        questionLatex = `${base}^{${exp}}`
-    }
-    {
-        let index = Math.floor(Math.random() * (indexlimit-1) + 2);
-        answer = base;
-        questionLatex = `\\sqrt[${index}]{${base**index}}`
-    }
-    question.innerText = `\\( ${questionLatex} \\)`
-    MathJax.typeset();
-}
+            function generate(){
+                let base = Math.floor(Math.random() * baselimit + 1);
+                if (Math.random() > 0.5){
+                    let exp = Math.floor(Math.random() * (explimit-1) + 2);
+                    answer = base ** exp;
+                    questionLatex = `${base}^{${exp}}`
+                }
+                else {
+                    let index = Math.floor(Math.random() * (indexlimit-1) + 2);
+                    answer = base;
+                    questionLatex = `\\sqrt[${index}]{${base**index}}`
+                }
+                question.innerText = `\\( ${questionLatex} \\)`
+                MathJax.typeset();
+            }
 
-function submit1(){
-    //event.preventDefault();
-    clearTimeout(statusTimeout);
-    
-    status.innerText = `Status: ${parseInt(input.value) == answer ? "Correct!" : "Incorrect..."}`;
-    input.style.backgroundColor = parseInt(input.value) == answer ? "#99f2b1" : "#ff8a82";
-    input.disabled = "true";
-    question.innerText = `\\(${questionLatex} = ${answer}\\)`
-    MathJax.typeset();
-    statusTimeout = setTimeout(()=>{status.innerText = "Status: Pending..."; input.disabled = ""; input.style.backgroundColor = ""; input.value = ""; generate();}, 3000);
-}
+            function submit1(){
+                //event.preventDefault();
+                clearTimeout(statusTimeout);
+                clearInterval(timerInterval);
+                
+                let diffPoints = parseInt(input.value) == answer ? Math.min(200, 1000 - (new Date() - time)*2/25) : 0;
+                targetPoints += diffPoints;
+                status.innerText = (parseInt(input.value) == answer ? "Correct!" : "Incorrect...") + ` +${diffPoints} pts`;
+                timeel.innerText = (new Date() - time)/1000 + " seconds";
+                input.style.backgroundColor = parseInt(input.value) == answer ? "#99f2b1" : "#ff8a82";
+                input.disabled = "true";
+                question.innerText = `\\(${questionLatex} = ${answer}\\)`
+                MathJax.typeset();
+                statusTimeout = setTimeout(()=>{
+                    status.innerText = "Pending...";
+                    input.disabled = "";
+                    input.style.backgroundColor = "";
+                    input.value = "";
+                    input.focus();
+                    time = new Date();
+                    generate();
+                    timerInterval = setInterval(tick, 1);
+                }, 1500);
+            }
 
-function updateLimits(){
-    [baselimit, explimit, indexlimit] = [parseInt(document.getElementById("baselimit").value),
-                                         parseInt(document.getElementById("explimit").value),
-                                         parseInt(document.getElementById("indexlimit").value)]; 
+            function tick(){
+                timeel.innerText = ((new Date() - time)/1000).toFixed(2) + " seconds";
+            }
 
-}
+            function updateLimits(){
+                [baselimit, explimit, indexlimit] = [parseInt(document.getElementById("baselimit").value), parseInt(document.getElementById("explimit").value), parseInt(document.getElementById("indexlimit").value)]; 
+            }
 
-generate()
-
-</script>
-</body>
+            generate();
+            timerInterval = setInterval(tick, 1);
+            setInterval(()=>{
+                currPoints = currPoints + Math.min(1, (targetPoints - currPoints) * 0.02);
+                pointsel.innerText = Math.round(currPoints) + " points";
+            }, 10);
+        </script>
+    </body>
 </html>
