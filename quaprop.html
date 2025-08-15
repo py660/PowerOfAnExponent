@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Can replace with your own locale -->
+<head>
+  <!-- Compatability -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Title and Description -->
+  <title>Quadratic Properties Trivia</title>
+  <!-- Link your CSS up here -->
+  <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" integrity="sha512-HqxHUkJM0SYcbvxUw5P60SzdOTy/QVwA1JJrvaXJv4q7lmbDZCmZaqz01UPOaQveoxfYRv1tHozWGPMcuTBuvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /-->
+  <style>
+* {
+    font-family: sans-serif;
+}
+i {
+    font-size: 1.1em;
+}
+b {
+    letter-spacing: 1px;
+}
+fieldset, legend {
+    background-color: #eaeaea;
+}
+legend {
+    border: solid 2px rgb(97, 97, 97);
+    padding: 2px;
+}
+#group, #group2 {
+    border: solid 2px rgb(97, 97, 97);
+}
+h2 {
+    margin: 10px;
+}
+.submit {
+    padding: 10px;
+    background-color: #f67e7e;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, margin-bottom 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.submit:hover {
+    transform: scale(1.015);
+    background-color: #f26868;
+    margin-bottom: -2px;
+    box-shadow: inset 0 0 0 2px rgb(70, 70, 70);
+}
+/* The container */
+.container {
+    transition: transform 0.2s, margin-top 0.2s, box-shadow 0.2s, background-color 0.2s;
+    background-color: #dfdfdf;
+    padding: 10px;
+    display: block;
+    position: relative;
+    padding-left: 45px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .container:hover {
+    transform: scale(1.015);
+    background-color: #cecece;
+    box-shadow: inset 0 0 0 2px rgb(70, 70, 70);
+  }
+  #container_a:hover {
+    margin-top: -2px;
+  }
+  /* Hide the browser's default checkbox */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    border: solid 2px rgb(138, 138, 138);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #2196F3;
+    border: solid 2px rgb(100, 100, 100);
+  }
+  .container:has(input:checked) {
+    background-color: #cccccc;
+  } 
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  </style>
+</head>
+<body>
+  <!-- Website Content -->
+  <fieldset>
+    <legend>[ <b id="score">—</b> POINTS] <i>Select all options that correspond to:</i> <b id="question">(Loading...)</b></legend>
+  
+    <div id="group">
+
+    <label class="container" id="container_a"><span id="a">...</span>
+      <input type="checkbox" id="input_a" name="0">
+      <span class="checkmark"></span>
+    </label>
+
+    <label class="container" id="container_b"><span id="b">...</span>
+      <input type="checkbox" id="input_b" name="0">
+      <span class="checkmark"></span>
+    </label>
+
+    <label class="container" id="container_c"><span id="c">...</span>
+      <input type="checkbox" id="input_c" name="0">
+      <span class="checkmark"></span>
+    </label>
+
+    <label class="container" id="container_d"><span id="d">...</span>
+      <input type="checkbox" id="input_d" name="0">
+      <span class="checkmark"></span>
+    </label>
+
+    <label class="container" id="container_e"><span id="e">...</span>
+      <input type="checkbox" id="input_e" name="0">
+      <span class="checkmark"></span>
+    </label>
+    <div class="submit" id="submit">Submit</div>
+    </div>
+
+  </fieldset>
+  <br/>
+
+  <!-- Javascript -->
+  <script>
+    let axis = ["Both pairs of opposite sides are parallel",
+    "Both pairs of opposite sides are congruent",
+    "Exactly 1 pair of opposite sides are parallel",
+    "Exactly 1 pair of opposite sides are congruent",
+    "Exactly 2 pairs of consecutive sides are congruent",
+    "All sides are congruent",
+    "Diagonals are congruent",
+    "Diagonals are perpendicular",
+    "Diagonals bisect each other",
+    "Diagonals bisect opposite angles",
+    "Both pairs of opposite angles are congruent",
+    "Exactly 1 pair of opposite angles are congruent",
+    "All angles are congruent",
+    "All consecutive angles sum to 180 degrees"];
+
+let invaxis = ["Parallelogram", "Rectangle", "Rhombus", "Square", "Trapezoid", "Isosceles Trapezoid", "Kite"];
+
+let data = [
+    [1,1,1,1,0,0,0],
+    [1,1,1,1,0,0,0],
+    [0,0,0,0,1,1,0],
+    [0,0,0,0,0,1,0],
+    [0,0,0,0,0,0,1],
+    [0,0,1,1,0,0,0],
+    [0,1,0,1,0,1,0],
+    [0,0,1,1,0,0,1],
+    [1,1,1,1,0,0,0],
+    [0,0,1,1,0,0,0],
+    [1,1,1,1,0,0,0],
+    [0,0,0,0,0,0,1],
+    [0,1,0,1,0,0,0],
+    [1,1,1,1,0,0,0]
+]
+
+let invdata = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
+
+function randInt(min, max){
+    min = min || 0;
+    max = max || 1;
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function getProblem(){
+    let type = randInt(0, 1);
+    let ishape = randInt(0, (type ? axis.length:invaxis.length)-1);
+    let [correct, incorrect] = getAnswer(type, ishape);
+    return [type, ishape, correct, incorrect];
+}
+
+function getAnswer(type, ishape){
+    let correct = (type ? data:invdata)[ishape].map((e, i) => e==1 ? i : -1).filter(x => x!=-1);
+    let incorrect = (type ? data:invdata)[ishape].map((e, i) => e==0 ? i : -1).filter(x => x!=-1);
+    return [correct, incorrect];
+}
+
+function showProblem(type, ishape, correct, incorrect){
+    let ichoices = correct.concat(incorrect).map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value).slice(0, 5);
+    let choices = ichoices.map(value => (type?invaxis:axis)[value]);
+    //console.log(choices);
+    let shape = (type ? axis:invaxis)[ishape];
+    document.getElementById("question").innerText = shape;
+
+    document.getElementById("a").innerText = choices[0];
+    document.getElementById("input_a").name = ichoices[0];
+    document.getElementById("input_a").checked = "";
+    document.getElementById("b").innerText = choices[1];
+    document.getElementById("input_b").name = ichoices[1];
+    document.getElementById("input_b").checked = "";
+    document.getElementById("c").innerText = choices[2];
+    document.getElementById("input_c").name = ichoices[2];
+    document.getElementById("input_c").checked = "";
+    document.getElementById("d").innerText = choices[3];
+    document.getElementById("input_d").name = ichoices[3];
+    document.getElementById("input_d").checked = "";
+    document.getElementById("e").innerText = choices[4];
+    document.getElementById("input_e").name = ichoices[4];
+    document.getElementById("input_e").checked = "";
+    return ichoices;
+}
+
+function collectAnswers(){
+    let answers = [];
+    //for (let i = 0; i < 5; i++) answers.push(document.getElementsByName("input_" + i)[0].value);
+    if (document.getElementById("input_a").checked) answers.push(parseInt(document.getElementById("input_a").name));
+    if (document.getElementById("input_b").checked) answers.push(parseInt(document.getElementById("input_b").name));
+    if (document.getElementById("input_c").checked) answers.push(parseInt(document.getElementById("input_c").name));
+    if (document.getElementById("input_d").checked) answers.push(parseInt(document.getElementById("input_d").name));
+    if (document.getElementById("input_e").checked) answers.push(parseInt(document.getElementById("input_e").name));
+    return answers;
+}
+
+// Formula: https://www.desmos.com/calculator/gk7wsbwrpi
+function validate(type, ishape, choices, answers){
+    let scores = [];
+    let correct = getAnswer(type, ishape)[0].filter((e)=>choices.includes(e));
+    //console.log(answers, correct)
+    for (let ans of answers){
+        if (correct.includes(ans)){
+            //console.log(ans);
+            scores.push(1)
+        };
+    };
+    let percent = scores.reduce((partialSum, a) => partialSum + a, 0) / [...new Set([...correct, ...answers])].length;
+    console.log(percent);
+    let dscore = Math.max(0, 110*(2**(6*percent-6))-10);
+    score += dscore;
+    console.log(dscore);
+}
+
+function revealAnswers(correct){
+    correct.includes(parseInt(document.getElementById("input_a").name)) ? document.getElementById("input_a").checked = "checked" : document.getElementById("input_a").checked = "";
+    correct.includes(parseInt(document.getElementById("input_b").name)) ? document.getElementById("input_b").checked = "checked" : document.getElementById("input_b").checked = "";
+    correct.includes(parseInt(document.getElementById("input_c").name)) ? document.getElementById("input_c").checked = "checked" : document.getElementById("input_c").checked = "";
+    correct.includes(parseInt(document.getElementById("input_d").name)) ? document.getElementById("input_d").checked = "checked" : document.getElementById("input_d").checked = "";
+    correct.includes(parseInt(document.getElementById("input_e").name)) ? document.getElementById("input_e").checked = "checked" : document.getElementById("input_e").checked = "";
+}
+
+let score = 0;
+let currentScore = 0;
+let status = 0;
+setInterval(()=>{
+    currentScore = Math.ceil(currentScore + 0.35*(score-currentScore));
+    document.getElementById("score").innerText = currentScore;
+}, 70);
+let [type, ishape, correct, incorrect] = getProblem();
+let choices = showProblem(type, ishape, correct, incorrect);
+//console.log(getProblem());
+//console.log(validate(1, 10, [0,1,3]));
+document.getElementById("submit").addEventListener("click", () => {
+    if (!status){
+        let answers = collectAnswers();
+        console.log(answers);
+        validate(type, ishape, choices, answers);
+        revealAnswers(correct);
+        document.getElementById("submit").innerText = "Next";
+        status = 1;
+    }
+    else{
+        [type, ishape, correct, incorrect] = getProblem();
+        choices = showProblem(type, ishape, correct, incorrect);
+        document.getElementById("submit").innerText = "Submit";
+        status = 0;
+    }
+});
+  </script>
+</body>
+</html>
